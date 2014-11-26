@@ -1,0 +1,20 @@
+.page-header { border: 0; }
+.page-header > h1 { font-weight: 200; }
+
+form > header > h3 {
+    font-weight: 200;
+    margin-top: 0;
+}
+
+#reservationsView { margin-top: 20px; }
+
+#formViewContainer { border-left: 1px solid #e5e5e5; }
+
+#filterByDateForm {
+    margin-right: 20px;
+}
+
+#filterByCartForm,
+#filterByDateForm {
+    display: inline-block;
+}
