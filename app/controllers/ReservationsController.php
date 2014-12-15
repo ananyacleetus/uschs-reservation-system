@@ -56,6 +56,20 @@ class ReservationsController extends BaseController {
 		
 		return Response::json(array("status" => "ok", "reservation" => $reservation->toArray()));
 		
+		$cart = Cart::find($reservation->cart_id);
+		
+		//find rooms before each mod
+		$previousRoomForMod = array();
+		foreach ($reservation->mods as &$mod) {
+			$previousRoom = Reservation::where('date', '=', $reservation->date->format("m/d/y"), 'and')->where('"," + mod + ","','LIKE', "$mod")->pluck('room_number');
+			$previousRoomForMod[$mod] = $previousRoom; 
+		}
+		
 		//Make a mail
+		Mail::send('emails.alert.reservation', array('date' => $reservation->date, 'cart_name' => $cart, 'teacher_name' => $reservation->teacher_name, 'previous_room_by_mod' => $previousRoomForMod, 'mods' => $reservation->mods), function($message)
+		{
+    		$message->to($reservation->teacher_email, 'Upper St. Clair High School Reservation System')
+    			->subject('You made a reservation with cart '.$cart->cart_name);
+		});
 	}
 }
